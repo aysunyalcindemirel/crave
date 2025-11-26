@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [react()],
   // IMPORTANT: If deploying to a custom domain, use '/'.
   // If deploying to https://<USERNAME>.github.io/<REPO>/, set base to '/<REPO>/'.
-  base: '/',
+  base: '/crave/',
 })
