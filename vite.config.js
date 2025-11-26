@@ -2,9 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  // IMPORTANT: If deploying to a custom domain, use '/'.
-  // If deploying to https://<USERNAME>.github.io/<REPO>/, set base to '/<REPO>/'.
-  base: '/crave/',
-})
+  // Use '/' for local development, and '/crave/' for production deployment
+  base: command === 'serve' ? '/' : '/crave/',
+}))
