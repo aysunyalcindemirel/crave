@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { recipes } from './data/recipes';
 import { Sparkles, ChefHat, Heart } from 'lucide-react';
 import { MealCard } from './components/MealCard';
 import { FavoritesDrawer } from './components/FavoritesDrawer';
+import { Button } from "@/components/ui/button";
 import { AnimatePresence } from 'framer-motion';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
   const isCurrentFavorite = currentRecipe ? favorites.some(r => r.id === currentRecipe.id) : false;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-primary/20">
       <FavoritesDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
@@ -55,47 +55,50 @@ function App() {
       />
 
       {/* Header */}
-      <header className="h-[80px] border-b border-[var(--color-border)] flex items-center justify-center sticky top-0 z-50 bg-[var(--color-bg)]/80 backdrop-blur-md">
-        <div className="container flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentRecipe(null)}>
-            <ChefHat className="text-[var(--color-primary)]" size={32} />
+      <header className="h-20 border-b flex items-center justify-center sticky top-0 z-40 bg-background/80 backdrop-blur-md">
+        <div className="container flex items-center justify-between px-6">
+          <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => setCurrentRecipe(null)}>
+            <ChefHat className="text-primary" size={32} />
             <h1 className="text-2xl font-bold tracking-tight">Crave</h1>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setIsDrawerOpen(true)}
-            className="p-2 hover:bg-[var(--color-surface)] rounded-full transition-colors relative"
+            className="relative rounded-full hover:bg-secondary"
           >
-            <Heart size={24} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" />
+            <Heart size={24} className="text-muted-foreground hover:text-primary transition-colors" />
             {favorites.length > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[var(--color-primary)] rounded-full border-2 border-[var(--color-bg)]" />
+              <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-primary rounded-full border-2 border-background" />
             )}
-          </button>
+          </Button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 container py-12 flex flex-col items-center justify-center text-center relative">
+      <main className="flex-1 container py-12 flex flex-col items-center justify-center text-center relative px-6">
         <AnimatePresence mode="wait">
           {!currentRecipe ? (
             <div className="max-w-2xl space-y-8">
               <div className="space-y-4">
-                <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
+                <h2 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
                   Don't know <br />
-                  <span className="text-gradient">what to eat?</span>
+                  <span className="bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">what to eat?</span>
                 </h2>
-                <p className="text-xl text-[var(--color-text-muted)]">
+                <p className="text-xl text-muted-foreground">
                   Discover delicious meals tailored to your taste.
                 </p>
               </div>
 
-              <button
+              <Button
+                size="lg"
                 onClick={suggestMeal}
                 disabled={isAnimating}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-lg font-semibold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-rose-500/25 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="h-14 px-8 text-lg rounded-full shadow-lg shadow-primary/25 hover:scale-105 transition-all duration-300"
               >
-                <Sparkles size={20} className={isAnimating ? "animate-spin" : ""} />
-                <span>{isAnimating ? "Finding the perfect meal..." : "Suggest a Meal"}</span>
-              </button>
+                <Sparkles size={20} className={`mr-2 ${isAnimating ? "animate-spin" : ""}`} />
+                {isAnimating ? "Finding the perfect meal..." : "Suggest a Meal"}
+              </Button>
             </div>
           ) : (
             <div className="w-full flex flex-col items-center gap-8">
@@ -105,20 +108,21 @@ function App() {
                 isFavorite={isCurrentFavorite}
                 onToggleFavorite={() => toggleFavorite(currentRecipe)}
               />
-              <button
+              <Button
+                variant="ghost"
                 onClick={suggestMeal}
-                className="text-[var(--color-text-muted)] hover:text-white transition-colors flex items-center gap-2"
+                className="text-muted-foreground hover:text-foreground"
               >
-                <Sparkles size={16} />
+                <Sparkles size={16} className="mr-2" />
                 Try another
-              </button>
+              </Button>
             </div>
           )}
         </AnimatePresence>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 text-center text-[var(--color-text-muted)] text-sm">
+      <footer className="py-8 text-center text-muted-foreground text-sm">
         <p>&copy; {new Date().getFullYear()} Crave App. Bon Appétit.</p>
       </footer>
     </div>
