@@ -6,6 +6,8 @@ import { FavoritesDrawer } from './components/FavoritesDrawer';
 import { Button } from "@/components/ui/button";
 import { AnimatePresence } from 'framer-motion';
 
+import confetti from 'canvas-confetti';
+
 function App() {
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -35,6 +37,17 @@ function App() {
       if (exists) {
         return prev.filter(r => r.id !== recipe.id);
       }
+
+      // Trigger confetti when adding to favorites
+      console.log('Confetti triggered');
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#f43f5e', '#fb7185', '#fda4af'], // Rose colors to match theme
+        zIndex: 9999
+      });
+
       return [...prev, recipe];
     });
   };
